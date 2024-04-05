@@ -11,7 +11,10 @@ all_layers = dict()
 for layer_name in fiona.listlayers(file_path):
     all_layers[layer_name] = gpd.read_file(file_path, layer=layer_name).to_crs(crs='EPSG:4326')
 
-m = folium.Map(tiles='cartodb positron', crs='EPSG3857')
+# Set up background layers, with "human-friendly" names
+m = folium.Map(crs='EPSG3857', tiles=None)
+folium.TileLayer('cartodb positron', name='Light Background').add_to(m)
+folium.TileLayer('openstreetmap', name='Detailed Background', show=False).add_to(m)
 
 feature_groups = []
 
@@ -30,6 +33,7 @@ for route_name, route_data in all_layers.items():
     m.add_child(fg)
     feature_groups.append(fg)
 
+folium.LayerControl(collapsed=False).add_to(m)
 layer_control = GroupedLayerControl(groups={'Regular Routes': feature_groups}, collapsed=False)
 layer_control.add_to(m)
 
