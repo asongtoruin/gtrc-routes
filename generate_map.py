@@ -34,4 +34,4 @@ layer_control = GroupedLayerControl(groups={'Regular Routes': feature_groups}, c
 layer_control.add_to(m)
 
 m.fit_bounds(m.get_bounds(), padding=(0, 0))
-m.save('site/index.html')
+m.save('maps/index.html')
