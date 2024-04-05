@@ -28,13 +28,16 @@ for route_name, route_data in all_layers.items():
 
     url = f'https://www.google.com/maps/@{",".join(map(str, first_point))},0a,75y,90t/data=!3m3!1e1!3m1!2e0'
     
-    folium.Circle(first_point, radius=10, fill=True, fill_opacity=0.8, popup=f'Start approximately (!!) <a href="{url}" target="_blank">Here</a>').add_to(fg)
-    
+    folium.Circle(
+        first_point, radius=10, fill=True, fill_opacity=0.8, 
+        popup=f'Start approximately (!!) <a href="{url}" target="_blank">here</a>'
+    ).add_to(fg)
+
     m.add_child(fg)
     feature_groups.append(fg)
 
 folium.LayerControl(collapsed=False).add_to(m)
-layer_control = GroupedLayerControl(groups={'Regular Routes': feature_groups}, collapsed=False)
+layer_control = GroupedLayerControl(groups={'Regular Routes<br>(click start point for info)': feature_groups}, collapsed=False)
 layer_control.add_to(m)
 
 m.fit_bounds(m.get_bounds(), padding=(0, 0))
