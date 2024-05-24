@@ -11,7 +11,7 @@ file_path = r'spatial_files/Regular Routes.gpkg'
 
 def sort_func(route_name):
     name_parts = re.search(
-        r'(?P<day>\w+day)[A-Za-z~\s]+(?P<length>[\d\.]+)km', 
+        r'(?P<day>\w+day)[A-Za-z~\s\(\)]+(?P<length>[\d\.]+)km', 
         route_name
     ).groupdict()
 
@@ -49,7 +49,7 @@ for route_name in sorted(all_layers.keys(), key=sort_func):
     feature_groups.append(fg)
 
 folium.LayerControl(collapsed=False).add_to(m)
-layer_control = GroupedLayerControl(groups={'Regular Routes<br>(click start point for info)': feature_groups}, collapsed=False)
+layer_control = GroupedLayerControl(groups={'Regular Routes<br>(click start point for info)': feature_groups})
 layer_control.add_to(m)
 
 m.fit_bounds(m.get_bounds(), padding=(0, 0))
