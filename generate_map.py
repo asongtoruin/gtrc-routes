@@ -1,3 +1,6 @@
+from calendar import day_name
+import re
+
 import geopandas as gpd
 import fiona
 import folium
@@ -5,6 +8,14 @@ from folium.plugins import GroupedLayerControl
 
 
 file_path = r'spatial_files/Regular Routes.gpkg'
+
+def sort_func(route_name):
+    name_parts = re.search(
+        r'(?P<day>\w+day)[A-Za-z~\s]+(?P<length>[\d\.]+)km', 
+        route_name
+    ).groupdict()
+
+    return list(day_name).index(name_parts['day']),  float(name_parts['length'])
 
 all_layers = dict()
 
@@ -18,8 +29,9 @@ folium.TileLayer('openstreetmap', name='Detailed Background', show=False).add_to
 
 feature_groups = []
 
-for route_name, route_data in all_layers.items():
+for route_name in sorted(all_layers.keys(), key=sort_func):
     print(route_name)
+    route_data = all_layers[route_name]
     
     fg = folium.FeatureGroup(name=route_name)
     folium.GeoJson(route_data).add_to(fg)
